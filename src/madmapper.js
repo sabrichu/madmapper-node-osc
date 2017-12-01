@@ -4,16 +4,24 @@ const oscClient = new osc.Client('127.0.0.1', 8010);
 const mathUtils = require('./utils');
 const surfaceConstants = require('./surfaces');
 
-const showAll = () => {
-    surfaceConstants.surfaceList.forEach((surfaceName) => {
+const show = (surfaceNames) => {
+    surfaceNames.forEach((surfaceName) => {
         oscClient.send(`/surfaces/${surfaceName}/opacity`, 1);
     });
 };
 
-const hideAll = () => {
-    surfaceConstants.surfaceList.forEach((surfaceName) => {
+const hide = (surfaceNames) => {
+    surfaceNames.forEach((surfaceName) => {
         oscClient.send(`/surfaces/${surfaceName}/opacity`, 0);
     });
+};
+
+const showAll = () => {
+    show(surfaceConstants.surfaceList);
+};
+
+const hideAll = () => {
+    hide(surfaceConstants.surfaceList);
 };
 
 const resetColorAll = () => {
@@ -26,8 +34,6 @@ const resetColorAll = () => {
 
 const setRandomColor = (surfaceNames) => {
     surfaceNames.forEach((surfaceName) => {
-
-
         oscClient.send(`/surfaces/${surfaceName}/red`, mathUtils.getRandomFloat());
         oscClient.send(`/surfaces/${surfaceName}/green`, mathUtils.getRandomFloat());
         oscClient.send(`/surfaces/${surfaceName}/blue`, mathUtils.getRandomFloat());
@@ -75,6 +81,7 @@ const setRandomBlue = (surfaceNames) => {
 };
 
 module.exports.showAll = showAll;
+module.exports.show = show;
 module.exports.hideAll = hideAll;
 module.exports.resetColorAll = resetColorAll;
 

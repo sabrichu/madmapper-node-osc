@@ -10,15 +10,43 @@ function partial(func) {
     };
 }
 
+setInterval(() => {
+    console.log('ding');
+}, 1000);
+
 let patternSchedule = [
     {
         patternSetup: () => {
             madmapper.hideAll();
         },
+        patternFunction: partial(patterns.randomShow, {
+            speed: 6000
+        }),
+        previousPatternDuration: 0
+    },
+    {
+        patternFunction: partial(patterns.randomShow, {
+            speed: 2000
+        }),
+        previousPatternDuration: 20000
+    },
+    {
+        patternFunction: partial(patterns.randomShow, {
+            speed: 1000
+        }),
+        previousPatternDuration: 10000
+    },
+    {
+        patternFunction: partial(patterns.randomShow, {
+            speed: 100
+        }),
+        previousPatternDuration: 5000
+    },
+    {
         patternFunction: partial(patterns.randomVisibilityAndColor, {
             speed: 100
         }),
-        previousPatternDuration: 0
+        previousPatternDuration: 5000
     },
     {
         patternFunction: partial(patterns.randomOpacity, {
@@ -27,7 +55,7 @@ let patternSchedule = [
                 sliceLimit: 3
             }
         }),
-        previousPatternDuration: 5000
+        previousPatternDuration: 1000
     },
     {
         patternFunction: partial(patterns.randomOpacity, {
@@ -55,7 +83,7 @@ let patternIndex = 0;
 const setPatterns = (pattern) => {
     if (pattern) {
         setTimeout(() => {
-            console.log(pattern);
+            console.log('change pattern');
 
             patterns.clearPattern(currentPattern, pattern.patternSetup);
             currentPattern = pattern.patternFunction();
