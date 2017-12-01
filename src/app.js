@@ -1,11 +1,6 @@
 const patterns = require('./patterns');
+const madmapper = require('./madmapper');
 
-// let currentPattern = patterns.randomOpacity({
-//     speed: 100,
-//     surfaceOptions: {
-//         sliceLimit: 1
-//     }
-// });
 function partial(func) {
     let args = Array.prototype.slice.call(arguments, 1);
 
@@ -14,72 +9,61 @@ function partial(func) {
         return func.apply(this, allArguments);
     };
 }
+
+let patternSchedule = [
+    {
+        patternSetup: () => {
+            madmapper.hideAll();
+        },
+        patternFunction: partial(patterns.randomVisibilityAndColor, {
+            speed: 100
+        }),
+        previousPatternDuration: 0
+    },
+    {
+        patternFunction: partial(patterns.randomOpacity, {
+            speed: 100,
+            surfaceOptions: {
+                sliceLimit: 3
+            }
+        }),
+        previousPatternDuration: 5000
+    },
+    {
+        patternFunction: partial(patterns.randomOpacity, {
+            speed: 100,
+            surfaceOptions: {
+                levelLimit: 2
+            }
+        }),
+        previousPatternDuration: 1000
+    },
+    {
+        patternFunction: partial(patterns.randomOpacity, {
+            speed: 100,
+            surfaceOptions: {
+                levelLimit: 1
+            }
+        }),
+        previousPatternDuration: 1000
+    }
+];
+
 let currentPattern = null;
-let pattern1 = partial(patterns.randomVisibilityAndColor, {
-    speed: 100
-});
-let pattern2 = partial(patterns.randomOpacity, {
-    speed: 100,
-    surfaceOptions: {
-        levelLimit: 3
-    }
-});
-let pattern3 = partial(patterns.randomOpacity, {
-    speed: 100,
-    surfaceOptions: {
-        levelLimit: 2
-    }
-});
-let pattern4 = partial(patterns.randomOpacity, {
-    speed: 100,
-    surfaceOptions: {
-        levelLimit: 1
-    }
-});
+let patternIndex = 0;
 
-const setNewPattern = (pattern, time, nextPattern) => {
-    setTimeout(() => {
-        patterns.clearPattern(currentPattern);
-        currentPattern = pattern();
+const setPatterns = (pattern) => {
+    if (pattern) {
+        setTimeout(() => {
+            console.log(pattern);
 
-        if (typeof nextPattern === 'function') {
-            nextPattern();
-        }
-    }, time);
+            patterns.clearPattern(currentPattern, pattern.patternSetup);
+            currentPattern = pattern.patternFunction();
+
+            // Surprised this doesn't throw an indexing error. Node thing?
+            setPatterns(patternSchedule[patternIndex++]);
+        }, pattern.previousPatternDuration);
+    }
 };
 
-currentPattern = pattern1();
-
-setNewPattern(
-    pattern2,
-    1000,
-    () => {
-        setNewPattern(
-            pattern3,
-            1000,
-            () => {
-                setNewPattern(
-                    pattern4,
-                    1000
-                );
-            }
-        )
-    }
-);
-
-// setTimeout(() => {
-//     patterns.clearPattern(currentPattern);
-
-//     currentPattern = patterns.randomOpacity({
-//         speed: 100,
-//         surfaceOptions: {
-//             levelLimit: 1
-//         }
-//     });
-
-
-//     setTimeout(() => {
-//         patterns.clearPattern(currentPattern);
-
-//     }, 5000);
-// }, 5000);
+setPatterns(patternSchedule[patternIndex]);

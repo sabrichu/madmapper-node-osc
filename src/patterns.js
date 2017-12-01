@@ -1,15 +1,9 @@
 const surfaceConstants = require('./surfaces');
 const madmapper = require('./madmapper');
 
-const clearPattern = (intervalId, showAll = true) => {
+const clearPattern = (intervalId, cleanupTasks = () => null) => {
     clearInterval(intervalId);
-    madmapper.resetColorAll();
-
-    if (showAll) {
-        madmapper.showAll();
-    } else {
-        madmapper.hideAll();
-    }
+    cleanupTasks();
 };
 
 const applyEffectsToSurfaces = (effects = [], {effectOptions = {}, surfaceOptions = {}}) => {
