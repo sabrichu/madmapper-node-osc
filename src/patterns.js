@@ -6,7 +6,7 @@ const clearPattern = (intervalId, cleanupTasks = () => null) => {
     cleanupTasks();
 };
 
-const applyEffectsToSurfaces = (effects = [], {effectOptions = {}, surfaceOptions = {}}) => {
+const applyEffectsToRandomSurfaces = (effects = [], {effectOptions = {}, surfaceOptions = {}}) => {
     let {levelLimit, sliceLimit, numberSurfaces = 1} = surfaceOptions;
     let surfaces = [];
 
@@ -27,47 +27,54 @@ const applyEffectsToSurfaces = (effects = [], {effectOptions = {}, surfaceOption
 const patterns = {
     randomVisibility: (options = {}) => {
         let {speed} = options;
+        applyEffectsToRandomSurfaces([madmapper.setRandomVisibility], options);
         let intervalId = setInterval(() => {
-            applyEffectsToSurfaces([madmapper.setRandomVisibility], options);
+            applyEffectsToRandomSurfaces([madmapper.setRandomVisibility], options);
+        }, speed);
+
+        return intervalId;
+    },
+    randomShow: (options = {}) => {
+        let {speed} = options;
+        applyEffectsToRandomSurfaces([madmapper.show], options);
+        let intervalId = setInterval(() => {
+            applyEffectsToRandomSurfaces([madmapper.show], options);
         }, speed);
 
         return intervalId;
     },
     randomVisibilityAndColor: (options = {}) => {
         let {speed} = options;
-
+        applyEffectsToRandomSurfaces([madmapper.setRandomVisibility, madmapper.setRandomColor], options);
         let intervalId = setInterval(() => {
-            applyEffectsToSurfaces([
-                madmapper.setRandomVisibility,
-                madmapper.setRandomColor
-            ], options);
+            applyEffectsToRandomSurfaces([madmapper.setRandomVisibility, madmapper.setRandomColor], options);
         }, speed);
 
         return intervalId;
     },
     randomOpacity: (options = {}) => {
         let {speed} = options;
+        applyEffectsToRandomSurfaces([madmapper.setRandomOpacity], options);
         let intervalId = setInterval(() => {
-            applyEffectsToSurfaces([madmapper.setRandomOpacity], options);
+            applyEffectsToRandomSurfaces([madmapper.setRandomOpacity], options);
         }, speed);
 
         return intervalId;
     },
     randomOpacityAndColor: (options = {}) => {
         let {speed} = options;
+        applyEffectsToRandomSurfaces([madmapper.setRandomOpacity, madmapper.setRandomColor], options);
         let intervalId = setInterval(() => {
-            applyEffectsToSurfaces([
-                madmapper.setRandomOpacity,
-                madmapper.setRandomColor
-            ], options);
+            applyEffectsToRandomSurfaces([madmapper.setRandomOpacity, madmapper.setRandomColor], options);
         }, speed);
 
         return intervalId;
     },
     randomColor: (options = {}) => {
         let {speed} = options;
+        applyEffectsToRandomSurfaces([madmapper.setRandomColor], options);
         let intervalId = setInterval(() => {
-            applyEffectsToSurfaces([madmapper.setRandomColor], options);
+            applyEffectsToRandomSurfaces([madmapper.setRandomColor], options);
         }, speed);
 
         return intervalId;
