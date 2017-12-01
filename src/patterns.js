@@ -24,7 +24,56 @@ const applyEffectsToRandomSurfaces = (effects = [], {effectOptions = {}, surface
     });
 };
 
+const applyEffectsToLevel = (effects = [], level) => {
+    effects.forEach((effect) => {
+        effect(surfaceConstants.surfaceListByLevel[level]);
+    });
+};
+
+const applyEffectsToSlice = (effects = [], slice) => {
+    effects.forEach((effect) => {
+        effect(surfaceConstants.surfaceListBySlice[slice]);
+    });
+};
+
 const patterns = {
+    aroundTheWorld: (options = {}) => {
+        let {speed} = options;
+        let slice = 1;
+
+        madmapper.hideAll();
+        applyEffectsToSlice([madmapper.show], slice);
+
+        let intervalId = setInterval(() => {
+            madmapper.hideAll();
+            applyEffectsToSlice([madmapper.show], slice++);
+
+            if (slice > surfaceConstants.numberSlices) {
+                slice = 1;
+            }
+        }, speed);
+
+        return intervalId;
+    },
+    pulseFromCenter: (options = {}) => {
+        let {speed} = options;
+        let level = 1;
+
+        madmapper.hideAll();
+        applyEffectsToLevel([madmapper.show], level);
+
+        let intervalId = setInterval(() => {
+            madmapper.hideAll();
+            applyEffectsToLevel([madmapper.show], level++);
+
+            if (level > surfaceConstants.numberLevels) {
+                level = 1;
+            }
+        }, speed);
+
+        return intervalId;
+    },
+
     randomVisibility: (options = {}) => {
         let {speed} = options;
         applyEffectsToRandomSurfaces([madmapper.setRandomVisibility], options);

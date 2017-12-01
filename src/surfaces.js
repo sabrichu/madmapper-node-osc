@@ -58,4 +58,5 @@ module.exports.surfaceList = surfaceList;
 module.exports.surfaceListByLevel = surfaceListByLevel;
 module.exports.surfaceListBySlice = surfaceListBySlice;
 module.exports.numberLevels = numberLevels;
+module.exports.numberSlices = numberSlices;
 module.exports.getRandomSurface = getRandomSurface;

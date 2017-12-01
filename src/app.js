@@ -16,6 +16,18 @@ setInterval(() => {
 
 let patternSchedule = [
     {
+        patternFunction: partial(patterns.pulseFromCenter, {
+            speed: 500
+        }),
+        duration: 5000
+    },
+    {
+        patternFunction: partial(patterns.aroundTheWorld, {
+            speed: 500
+        }),
+        duration: 4000
+    },
+    {
         patternSetup: () => {
             madmapper.hideAll();
         },
@@ -80,6 +92,8 @@ let patternSchedule = [
 let currentPattern = null;
 let patternIndex = 0;
 
+// XXX: Loop whole thing
+
 const setPatterns = (pattern) => {
     if (pattern) {
         setTimeout(() => {
@@ -88,8 +102,9 @@ const setPatterns = (pattern) => {
             patterns.clearPattern(currentPattern, pattern.patternSetup);
             currentPattern = pattern.patternFunction();
 
+            patternIndex++;
             // Surprised this doesn't throw an indexing error. Node thing?
-            setPatterns(patternSchedule[patternIndex++]);
+            setPatterns(patternSchedule[patternIndex]);
         // Look at the duration set on previous pattern to set timeout (confusing but makes the scheduler easier to understand)
         }, patternIndex === 0 ? 0 : patternSchedule[patternIndex - 1].duration);
     }
