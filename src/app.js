@@ -22,31 +22,31 @@ let patternSchedule = [
         patternFunction: partial(patterns.randomShow, {
             speed: 6000
         }),
-        previousPatternDuration: 0
+        duration: 40000
     },
     {
         patternFunction: partial(patterns.randomShow, {
             speed: 2000
         }),
-        previousPatternDuration: 20000
+        duration: 20000
     },
     {
         patternFunction: partial(patterns.randomShow, {
             speed: 1000
         }),
-        previousPatternDuration: 10000
+        duration: 10000
     },
     {
         patternFunction: partial(patterns.randomShow, {
             speed: 100
         }),
-        previousPatternDuration: 5000
+        duration: 5000
     },
     {
         patternFunction: partial(patterns.randomVisibilityAndColor, {
             speed: 100
         }),
-        previousPatternDuration: 5000
+        duration: 5000
     },
     {
         patternFunction: partial(patterns.randomOpacity, {
@@ -55,7 +55,7 @@ let patternSchedule = [
                 sliceLimit: 3
             }
         }),
-        previousPatternDuration: 1000
+        duration: 1000
     },
     {
         patternFunction: partial(patterns.randomOpacity, {
@@ -64,7 +64,7 @@ let patternSchedule = [
                 levelLimit: 2
             }
         }),
-        previousPatternDuration: 1000
+        duration: 1000
     },
     {
         patternFunction: partial(patterns.randomOpacity, {
@@ -73,7 +73,7 @@ let patternSchedule = [
                 levelLimit: 1
             }
         }),
-        previousPatternDuration: 1000
+        duration: 1000
     }
 ];
 
@@ -90,7 +90,8 @@ const setPatterns = (pattern) => {
 
             // Surprised this doesn't throw an indexing error. Node thing?
             setPatterns(patternSchedule[patternIndex++]);
-        }, pattern.previousPatternDuration);
+        // Look at the duration set on previous pattern to set timeout (confusing but makes the scheduler easier to understand)
+        }, patternIndex === 0 ? 0 : patternSchedule[patternIndex - 1].duration);
     }
 };
 
