@@ -18,10 +18,10 @@ let surfaceListBySlice = {
 };
 
 let numberLevels = 6;
+let numberSlices = 7;
 
-// Not sure this is needed...
-let surfaces = {};
 let surfaceListByLevel = {};
+let surfaceList = [];
 
 for (level in numberSurfacesByLevel) {
     surfaceListByLevel[level] = [];
@@ -29,27 +29,33 @@ for (level in numberSurfacesByLevel) {
     for (let i = 1; i <= numberSurfacesByLevel[level]; i++) {
         let surfaceName = `${level}-${i}`;
         surfaceListByLevel[level].push(surfaceName);
-        surfaces[surfaceName] = false;
+        surfaceList.push(surfaceName);
     }
 }
 
-let surfaceList = Object.keys(surfaces);
-
 const getRandomIntInclusive = (max) => (
+    // 1 - max
     Math.floor(Math.random() * (Math.floor(max) + 1)) + 1
 );
 
-const getRandomSurface = (level) => {
+const getRandomSurface = (options = {}) => {
+    let {level, slice} = options;
+
     if (level) {
-        return `${level}-${getRandomIntInclusive(numberSurfacesByLevel[level])}`
+        return surfaceListByLevel[level][
+            getRandomIntInclusive(surfaceListBySlice[level].length) - 1
+        ];
     }
 
-    let randomLevel = getRandomIntInclusive(numberLevels);
+    if (slice) {
+        return surfaceListBySlice[slice][
+            getRandomIntInclusive(surfaceListBySlice[slice].length) - 1
+        ];
+    }
 
-    return `${randomLevel}-${getRandomIntInclusive(numberSurfacesByLevel[randomLevel])}`
+    return surfaceList[getRandomIntInclusive(surfaceList.length) - 1];
 };
 
-module.exports.surfaces = surfaces;
 module.exports.numberSurfacesByLevel = numberSurfacesByLevel;
 module.exports.surfaceList = surfaceList;
 module.exports.surfaceListByLevel = surfaceListByLevel;
