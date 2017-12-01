@@ -1,3 +1,5 @@
+const mathUtils = require('./utils');
+
 let numberSurfacesByLevel = {
     1: 7,
     2: 12,
@@ -33,27 +35,22 @@ for (level in numberSurfacesByLevel) {
     }
 }
 
-const getRandomIntInclusive = (max) => (
-    // 1 - max
-    Math.floor(Math.random() * (Math.floor(max) + 1)) + 1
-);
-
 const getRandomSurface = (options = {}) => {
     let {level, slice} = options;
 
     if (level) {
         return surfaceListByLevel[level][
-            getRandomIntInclusive(surfaceListBySlice[level].length) - 1
+            mathUtils.getRandomIntInclusive(surfaceListBySlice[level].length) - 1
         ];
     }
 
     if (slice) {
         return surfaceListBySlice[slice][
-            getRandomIntInclusive(surfaceListBySlice[slice].length) - 1
+            mathUtils.getRandomIntInclusive(surfaceListBySlice[slice].length) - 1
         ];
     }
 
-    return surfaceList[getRandomIntInclusive(surfaceList.length) - 1];
+    return surfaceList[mathUtils.getRandomIntInclusive(surfaceList.length) - 1];
 };
 
 module.exports.numberSurfacesByLevel = numberSurfacesByLevel;

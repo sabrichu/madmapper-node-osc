@@ -1,15 +1,22 @@
 const osc = require('node-osc');
 const oscClient = new osc.Client('127.0.0.1', 8010);
 
+const mathUtils = require('./utils');
 const surfaceConstants = require('./surfaces');
 
-const resetOpacity = (opacity = 1) => {
+const showAll = () => {
     surfaceConstants.surfaceList.forEach((surfaceName) => {
-        oscClient.send(`/surfaces/${surfaceName}/opacity`, opacity);
+        oscClient.send(`/surfaces/${surfaceName}/opacity`, 1);
     });
 };
 
-const resetColor = () => {
+const hideAll = () => {
+    surfaceConstants.surfaceList.forEach((surfaceName) => {
+        oscClient.send(`/surfaces/${surfaceName}/opacity`, 0);
+    });
+};
+
+const resetColorAll = () => {
     surfaceConstants.surfaceList.forEach((surfaceName) => {
         oscClient.send(`/surfaces/${surfaceName}/red`, 1);
         oscClient.send(`/surfaces/${surfaceName}/green`, 1);
@@ -17,15 +24,13 @@ const resetColor = () => {
     });
 };
 
-const getRandomColorValue = () => (
-    Math.random() * 0.5 + 0.5
-);
-
 const setRandomColor = (surfaceNames) => {
     surfaceNames.forEach((surfaceName) => {
-        oscClient.send(`/surfaces/${surfaceName}/red`, getRandomColorValue());
-        oscClient.send(`/surfaces/${surfaceName}/green`, getRandomColorValue());
-        oscClient.send(`/surfaces/${surfaceName}/blue`, getRandomColorValue());
+
+
+        oscClient.send(`/surfaces/${surfaceName}/red`, mathUtils.getRandomFloat());
+        oscClient.send(`/surfaces/${surfaceName}/green`, mathUtils.getRandomFloat());
+        oscClient.send(`/surfaces/${surfaceName}/blue`, mathUtils.getRandomFloat());
     });
 };
 
@@ -69,10 +74,13 @@ const setRandomBlue = (surfaceNames) => {
     });
 };
 
-module.exports.resetOpacity = resetOpacity;
-module.exports.resetColor = resetColor;
+module.exports.showAll = showAll;
+module.exports.hideAll = hideAll;
+module.exports.resetColorAll = resetColorAll;
+
 module.exports.setRandomOpacity = setRandomOpacity;
 module.exports.setRandomVisibility = setRandomVisibility;
+
 module.exports.setRandomColor = setRandomColor;
 module.exports.setRandomRed = setRandomRed;
 module.exports.setRandomGreen = setRandomGreen;
