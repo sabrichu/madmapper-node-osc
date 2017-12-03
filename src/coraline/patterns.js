@@ -1,5 +1,5 @@
+const madmapper = require('../madmapper');
 const surfaceConstants = require('./surfaces');
-const madmapper = require('./madmapper');
 
 const clearPattern = (intervalId, cleanupTasks = () => null) => {
     clearInterval(intervalId);
@@ -41,16 +41,17 @@ const patterns = {
         let {speed} = options;
         let slice = 1;
 
-        madmapper.hideAll();
-        applyEffectsToSlice([madmapper.show], slice);
+        // madmapper.hideAll();
+        applyEffectsToSlice([madmapper.setRandomOpacity, madmapper.setRandomColor], slice);
 
         let intervalId = setInterval(() => {
-            madmapper.hideAll();
-            applyEffectsToSlice([madmapper.show], slice++);
-
+            // madmapper.hideAll();
+            slice++;
             if (slice > surfaceConstants.numberSlices) {
                 slice = 1;
             }
+            applyEffectsToSlice([madmapper.setRandomOpacity, madmapper.setRandomColor], slice);
+
         }, speed);
 
         return intervalId;
@@ -85,9 +86,9 @@ const patterns = {
     },
     randomShow: (options = {}) => {
         let {speed} = options;
-        applyEffectsToRandomSurfaces([madmapper.show], options);
+        applyEffectsToRandomSurfaces([madmapper.fadeIn], options);
         let intervalId = setInterval(() => {
-            applyEffectsToRandomSurfaces([madmapper.show], options);
+            applyEffectsToRandomSurfaces([madmapper.fadeIn], options);
         }, speed);
 
         return intervalId;

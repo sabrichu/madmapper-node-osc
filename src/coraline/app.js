@@ -1,5 +1,59 @@
+const madmapper = require('../madmapper');
 const patterns = require('./patterns');
-const madmapper = require('./madmapper');
+const keypress = require('keypress');
+const tty = require('tty');
+
+let currentPattern = null;
+
+let patternsByKey = {
+    'right': () => {
+        madmapper.fadeInAll();
+    },
+    'left': () => {
+        madmapper.fadeOutAll();
+    },
+    'q': () => {
+        return patterns.pulseFromCenter({
+            speed: 100
+        });
+    },
+    'w': () => {
+        // madmapper.hideAll();
+        return patterns.aroundTheWorld({
+            speed: 100
+        });
+    },
+    'e': () => {
+        madmapper.hideAll();
+
+        return patterns.randomShow({
+            speed: 100
+        });
+    }
+};
+
+// make `process.stdin` begin emitting "keypress" events
+keypress(process.stdin);
+
+// listen for the "keypress" event
+process.stdin.on('keypress', function (ch, key) {
+    console.log('got "keypress"', key);
+    if (key && key.ctrl && key.name == 'c') {
+        process.exit();
+    }
+    if (patternsByKey[key.name]) {
+        patterns.clearPattern(currentPattern)
+        currentPattern = patternsByKey[key.name]();
+    }
+});
+
+if (typeof process.stdin.setRawMode == 'function') {
+    process.stdin.setRawMode(true);
+} else {
+    tty.setRawMode(true);
+}
+process.stdin.resume();
+
 
 function partial(func) {
     let args = Array.prototype.slice.call(arguments, 1);
@@ -10,33 +64,29 @@ function partial(func) {
     };
 }
 
-setInterval(() => {
-    console.log('ding');
-}, 1000);
-
 let patternSchedule = [
-    {
-        patternFunction: partial(patterns.pulseFromCenter, {
-            speed: 500
-        }),
-        duration: 5000
-    },
-    {
-        patternFunction: partial(patterns.aroundTheWorld, {
-            speed: 500
-        }),
-        duration: 4000
-    },
+    // {
+    //     patternFunction: partial(patterns.pulseFromCenter, {
+    //         speed: 100
+    //     }),
+    //     duration: 5000
+    // },
+    // {
+    //     patternFunction: partial(patterns.aroundTheWorld, {
+    //         speed: 100
+    //     }),
+    //     duration: 4000
+    // },
+    // {
+    //     patternFunction: partial(patterns.randomShow, {
+    //         speed: 6000
+    //     }),
+    //     duration: 4000
+    // },
     {
         patternSetup: () => {
             madmapper.hideAll();
         },
-        patternFunction: partial(patterns.randomShow, {
-            speed: 6000
-        }),
-        duration: 40000
-    },
-    {
         patternFunction: partial(patterns.randomShow, {
             speed: 2000
         }),
@@ -89,7 +139,7 @@ let patternSchedule = [
     }
 ];
 
-let currentPattern = null;
+// let currentPattern = null;
 let patternIndex = 0;
 
 // XXX: Loop whole thing
@@ -110,4 +160,4 @@ const setPatterns = (pattern) => {
     }
 };
 
-setPatterns(patternSchedule[patternIndex]);
+// setPatterns(patternSchedule[patternIndex]);

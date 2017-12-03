@@ -2,7 +2,58 @@ const osc = require('node-osc');
 const oscClient = new osc.Client('127.0.0.1', 8010);
 
 const mathUtils = require('./utils');
-const surfaceConstants = require('./surfaces');
+
+const fadeIn = (surfaceNames) => {
+    let start = 0;
+    let fade = setInterval(() => {
+        if (start < 1) {
+            surfaceNames.forEach((surfaceName) => {
+                oscClient.send(`/surfaces/${surfaceName}/opacity`, start);
+            });
+            start += 0.001;
+        } else {
+            clearInterval(fade);
+        }
+    }, 0);
+};
+
+const fadeOut = (surfaceNames) => {
+    let start = 1;
+    let fade = setInterval(() => {
+        if (start >= 0) {
+            surfaceNames.forEach((surfaceName) => {
+                oscClient.send(`/surfaces/${surfaceName}/opacity`, start);
+            });
+            start -= 0.001;
+        } else {
+            clearInterval(fade);
+        }
+    }, 0);
+};
+
+const fadeInAll = () => {
+    let start = 0;
+    let fade = setInterval(() => {
+        if (start < 1) {
+            oscClient.send('master/fadeToBlack', start);
+            start += 0.001;
+        } else {
+            clearInterval(fade);
+        }
+    }, 0);
+};
+
+const fadeOutAll = () => {
+    let start = 1;
+    let fade = setInterval(() => {
+        if (start >= 0) {
+            oscClient.send('master/fadeToBlack', start);
+            start -= 0.001;
+        } else {
+            clearInterval(fade);
+        }
+    }, 0);
+};
 
 const show = (surfaceNames) => {
     surfaceNames.forEach((surfaceName) => {
@@ -17,15 +68,15 @@ const hide = (surfaceNames) => {
 };
 
 const showAll = () => {
-    show(surfaceConstants.surfaceList);
+    oscClient.send('master/fadeToBlack', 1);
 };
 
 const hideAll = () => {
-    hide(surfaceConstants.surfaceList);
+    oscClient.send('master/fadeToBlack', 0);
 };
 
-const resetColorAll = () => {
-    surfaceConstants.surfaceList.forEach((surfaceName) => {
+const resetColorAll = (surfaceNames) => {
+    surfaceNames.forEach((surfaceName) => {
         oscClient.send(`/surfaces/${surfaceName}/red`, 1);
         oscClient.send(`/surfaces/${surfaceName}/green`, 1);
         oscClient.send(`/surfaces/${surfaceName}/blue`, 1);
@@ -80,9 +131,14 @@ const setRandomBlue = (surfaceNames) => {
     });
 };
 
+module.exports.fadeInAll = fadeInAll;
+module.exports.fadeOutAll = fadeOutAll;
+module.exports.fadeIn = fadeIn;
+module.exports.fadeOut = fadeOut;
 module.exports.showAll = showAll;
-module.exports.show = show;
 module.exports.hideAll = hideAll;
+module.exports.show = show;
+module.exports.hide = hide;
 module.exports.resetColorAll = resetColorAll;
 
 module.exports.setRandomOpacity = setRandomOpacity;

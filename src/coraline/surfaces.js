@@ -1,4 +1,4 @@
-const mathUtils = require('./utils');
+const mathUtils = require('../utils');
 
 let numberSurfacesByLevel = {
     1: 7,

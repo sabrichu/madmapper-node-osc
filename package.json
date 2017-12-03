@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
+    "keypress": "^0.2.1",
     "node-osc": "^2.1.0"
   }
 }
