@@ -7,10 +7,10 @@ let currentPattern = null;
 
 let patternsByKey = {
     'right': () => {
-        madmapper.fadeInAll();
+        madmapper.fadeInMaster();
     },
     'left': () => {
-        madmapper.fadeOutAll();
+        madmapper.fadeOutMaster();
     },
     'q': () => {
         return patterns.pulseFromCenter({
@@ -18,14 +18,11 @@ let patternsByKey = {
         });
     },
     'w': () => {
-        // madmapper.hideAll();
         return patterns.aroundTheWorld({
             speed: 100
         });
     },
     'e': () => {
-        madmapper.hideAll();
-
         return patterns.randomShow({
             speed: 100
         });

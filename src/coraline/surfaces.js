@@ -1,6 +1,6 @@
 const mathUtils = require('../utils');
 
-let numberSurfacesByLevel = {
+const numberSurfacesByLevel = {
     1: 7,
     2: 12,
     3: 10,
@@ -9,7 +9,7 @@ let numberSurfacesByLevel = {
     6: 3
 };
 
-let surfaceListBySlice = {
+const surfaceListBySlice = {
     1: ['1-1', '2-1', '3-1', '4-1', '5-1', '6-1'],
     2: ['1-7', '2-6', '2-11', '3-2', '4-7', '5-3'],
     3: ['1-3', '2-7', '3-7', '4-6'],
@@ -19,8 +19,8 @@ let surfaceListBySlice = {
     7: ['1-5', '2-4', '2-8', '3-3', '4-2', '5-2', '6-2']
 };
 
-let numberLevels = 6;
-let numberSlices = 7;
+const numberLevels = 6;
+const numberSlices = 7;
 
 let surfaceListByLevel = {};
 let surfaceList = [];

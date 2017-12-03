@@ -41,11 +41,11 @@ const patterns = {
         let {speed} = options;
         let slice = 1;
 
-        // madmapper.hideAll();
+        // madmapper.hide(surfaceConstants.surfaceList);
         applyEffectsToSlice([madmapper.setRandomOpacity, madmapper.setRandomColor], slice);
 
         let intervalId = setInterval(() => {
-            // madmapper.hideAll();
+            // madmapper.hide(surfaceConstants.surfaceList);
             slice++;
             if (slice > surfaceConstants.numberSlices) {
                 slice = 1;
@@ -60,11 +60,11 @@ const patterns = {
         let {speed} = options;
         let level = 1;
 
-        madmapper.hideAll();
+        madmapper.hide(surfaceConstants.surfaceList);
         applyEffectsToLevel([madmapper.show], level);
 
         let intervalId = setInterval(() => {
-            madmapper.hideAll();
+            madmapper.hide(surfaceConstants.surfaceList);
             applyEffectsToLevel([madmapper.show], level++);
 
             if (level > surfaceConstants.numberLevels) {

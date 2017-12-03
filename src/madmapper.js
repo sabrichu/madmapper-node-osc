@@ -1,54 +1,54 @@
 const osc = require('node-osc');
-const oscClient = new osc.Client('127.0.0.1', 8010);
+const oscClient = new osc.Client('127.0.0.1', 8917);
 
 const mathUtils = require('./utils');
 
-const fadeIn = (surfaceNames) => {
+const fadeIn = (surfaceNames, speedDenominator = 1000) => {
     let start = 0;
     let fade = setInterval(() => {
         if (start < 1) {
             surfaceNames.forEach((surfaceName) => {
                 oscClient.send(`/surfaces/${surfaceName}/opacity`, start);
             });
-            start += 0.001;
+            start += 1 / speedDenominator;
         } else {
             clearInterval(fade);
         }
     }, 0);
 };
 
-const fadeOut = (surfaceNames) => {
+const fadeOut = (surfaceNames, speedDenominator = 1000) => {
     let start = 1;
     let fade = setInterval(() => {
         if (start >= 0) {
             surfaceNames.forEach((surfaceName) => {
                 oscClient.send(`/surfaces/${surfaceName}/opacity`, start);
             });
-            start -= 0.001;
+            start -= 1 / speedDenominator;
         } else {
             clearInterval(fade);
         }
     }, 0);
 };
 
-const fadeInAll = () => {
+const fadeInMaster = (speedDenominator = 1000) => {
     let start = 0;
     let fade = setInterval(() => {
         if (start < 1) {
-            oscClient.send('master/fadeToBlack', start);
-            start += 0.001;
+            oscClient.send('master/fade_to_black', start);
+            start += 1 / speedDenominator;
         } else {
             clearInterval(fade);
         }
     }, 0);
 };
 
-const fadeOutAll = () => {
+const fadeOutMaster = (speedDenominator = 1000) => {
     let start = 1;
     let fade = setInterval(() => {
         if (start >= 0) {
-            oscClient.send('master/fadeToBlack', start);
-            start -= 0.001;
+            oscClient.send('master/fade_to_black', start);
+            start -= 1 / speedDenominator;
         } else {
             clearInterval(fade);
         }
@@ -65,14 +65,6 @@ const hide = (surfaceNames) => {
     surfaceNames.forEach((surfaceName) => {
         oscClient.send(`/surfaces/${surfaceName}/opacity`, 0);
     });
-};
-
-const showAll = () => {
-    oscClient.send('master/fadeToBlack', 1);
-};
-
-const hideAll = () => {
-    oscClient.send('master/fadeToBlack', 0);
 };
 
 const resetColorAll = (surfaceNames) => {
@@ -131,12 +123,10 @@ const setRandomBlue = (surfaceNames) => {
     });
 };
 
-module.exports.fadeInAll = fadeInAll;
-module.exports.fadeOutAll = fadeOutAll;
+module.exports.fadeInMaster = fadeInMaster;
+module.exports.fadeOutMaster = fadeOutMaster;
 module.exports.fadeIn = fadeIn;
 module.exports.fadeOut = fadeOut;
-module.exports.showAll = showAll;
-module.exports.hideAll = hideAll;
 module.exports.show = show;
 module.exports.hide = hide;
 module.exports.resetColorAll = resetColorAll;

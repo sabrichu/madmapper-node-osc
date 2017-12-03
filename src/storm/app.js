@@ -7,10 +7,10 @@ let currentPattern = null;
 
 let patternsByKey = {
     'right': () => {
-        madmapper.fadeInAll();
+        madmapper.fadeInMaster();
     },
     'left': () => {
-        madmapper.fadeOutAll();
+        madmapper.fadeOutMaster();
     },
     'q': () => {
         return patterns.pulseFromCenter({
