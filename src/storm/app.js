@@ -2,15 +2,56 @@ const madmapper = require('../madmapper');
 const keypress = require('keypress');
 const tty = require('tty');
 
+let sourceY = -1.9;
+let sourceYLimit = 1.9;
+let yUnit = 0.02;
+
 let patternsByKey = {
+    '9': {
+        patternFunction: () => {
+            console.log('--- FIRE SHRUM ---')
+            madmapper.fadeOut(['candyMountain', 'candySky']);
+            madmapper.fadeIn(['redStorm', 'blueStorm', 'greenStorm', 'fireStorm']);
+        }
+    },
+    '0': {
+        patternFunction: () => {
+            console.log('--- CANDY MOUNTAIN ---')
+            madmapper.fadeOut(['redStorm', 'blueStorm', 'greenStorm', 'fireStorm']);
+            madmapper.fadeIn(['candyMountain', 'candySky']);
+        }
+    },
+    'up': {
+        patternFunction: () => {
+            console.log('Storm triangle up');
+            sourceY += yUnit;
+            if (sourceY >= sourceYLimit) {
+                sourceY = sourceYLimit - yUnit;
+            }
+            madmapper.moveSourceY('fireStorm', sourceY);
+        }
+    },
+    'down': {
+        patternFunction: () => {
+            console.log('Storm triangle down');
+            sourceY -= yUnit;
+            if (sourceY <= -sourceYLimit) {
+                sourceY = -sourceYLimit + yUnit;
+            }
+            madmapper.moveSourceY('fireStorm', sourceY);
+        }
+    },
     'right': {
         patternFunction: () => {
-            madmapper.playForward('Cloodslooped.mov');
+            console.log('Storm forward');
+            // Cloods backward is forward
+            madmapper.playBackward('Cloodslooped.mov');
         }
     },
     'left': {
         patternFunction: () => {
-            madmapper.playBackward('Cloodslooped.mov');
+            console.log('Storm backward');
+            madmapper.playForward('Cloodslooped.mov');
         }
     },
     '1': {
@@ -25,32 +66,38 @@ let patternsByKey = {
     },
     'q': {
         patternFunction: () => {
-            madmapper.fadeOut(['redStorm'], 0.7);
+            console.log('red down')
+            madmapper.fadeOut(['redStorm']);
         }
     },
     'w': {
         patternFunction: () => {
-            madmapper.fadeIn(['redStorm'], 0.7);
+            console.log('red up')
+            madmapper.fadeIn(['redStorm']);
         }
     },
     'a': {
         patternFunction: () => {
-            madmapper.fadeOut(['greenStorm'], 0.7);
+            console.log('green down')
+            madmapper.fadeOut(['greenStorm']);
         }
     },
     's': {
         patternFunction: () => {
-            madmapper.fadeIn(['greenStorm'], 0.7);
+            console.log('green up')
+            madmapper.fadeIn(['greenStorm']);
         }
     },
     'z': {
         patternFunction: () => {
-            madmapper.fadeOut(['blueStorm'], 0.7);
+            console.log('blue down')
+            madmapper.fadeOut(['blueStorm']);
         }
     },
     'x': {
         patternFunction: () => {
-            madmapper.fadeIn(['blueStorm'], 0.7);
+            console.log('blue up')
+            madmapper.fadeIn(['blueStorm']);
         }
     }
 };

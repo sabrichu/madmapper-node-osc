@@ -168,6 +168,10 @@ const playBackward = (mediaName) => {
     oscClient.send(`/medias/${mediaName}/play_forward`, 0);
 };
 
+const moveSourceY = (surfaceName, yValue) => {
+    oscClient.send(`/surfaces/${surfaceName}/uv_y`, yValue);
+};
+
 module.exports.fadeInMaster = fadeInMaster;
 module.exports.fadeOutMaster = fadeOutMaster;
 module.exports.fadeIn = fadeIn;
@@ -189,3 +193,4 @@ module.exports.setRandomVisibility = setRandomVisibility;
 
 module.exports.playForward = playForward;
 module.exports.playBackward = playBackward;
+module.exports.moveSourceY = moveSourceY;
