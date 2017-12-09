@@ -7,18 +7,24 @@ let sourceYLimit = 1.9;
 let yUnit = 0.02;
 
 let patternsByKey = {
-    '9': {
+    '8': {
         patternFunction: () => {
             console.log('--- FIRE SHRUM ---')
             madmapper.fadeOut(['candyMountain', 'candySky']);
             madmapper.fadeIn(['redStorm', 'blueStorm', 'greenStorm', 'fireStorm']);
         }
     },
-    '0': {
+    '9': {
         patternFunction: () => {
             console.log('--- CANDY MOUNTAIN ---')
             madmapper.fadeOut(['redStorm', 'blueStorm', 'greenStorm', 'fireStorm']);
             madmapper.fadeIn(['candyMountain', 'candySky']);
+        }
+    },
+    '0': {
+        patternFunction: () => {
+            console.log('--- ALL OFF ---')
+            madmapper.fadeOut(['redStorm', 'blueStorm', 'greenStorm', 'fireStorm', 'candyMountain', 'candySky']);
         }
     },
     'up': {
